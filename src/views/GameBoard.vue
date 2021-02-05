@@ -1,7 +1,9 @@
 <template>
-  <div class="w-full h-full flex flex-col justify-center items-center">
+  <div class="w-full h-full flex flex-col justify-center items-center text-gray-600">
     
     <div class="flex flex-row" v-for="(r, rIdx) in numRows" :key="rIdx">
+
+      <!-- Rules for the rows -->
       <div class="w-24 mr-2 flex justify-end items-center" 
           :class="{ 'h-8': rIdx === 0, 'mt-24': rIdx === 0 }">
         <div
@@ -13,10 +15,11 @@
       </div>
 
       <div v-for="(c, cIdx) in numCols" :key="cIdx">
+        
+        <!-- Rules for the columns -->
         <div
           v-if="rIdx === 0"
           class="h-24 flex flex-col justify-end items-center">
-
           <div 
             v-for="(cRule, cRuleIdx) in colRules[cIdx]"
             :key="cRuleIdx">
@@ -25,12 +28,14 @@
         </div>
 
         <div 
-          class="w-8 h-8 border-gray-200 flex justify-center items-center select-none cursor-pointer"
+          class="w-8 h-8 border-gray-500 flex justify-center items-center select-none cursor-pointer"
           :class="{
             'border-t-2': rIdx == 0,
             'border-r-2': cIdx < numCols,
             'border-b-2': rIdx < numRows,
             'border-l-2': cIdx == 0,
+            'special-bg-1': (rIdx + cIdx) % 2 === 0,
+            'special-bg-2': (rIdx + cIdx) % 2 !== 0
           }"
           @click="onMark(rIdx, cIdx, true)"
           @contextmenu.prevent="onMark(rIdx, cIdx, false)">
@@ -96,6 +101,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+  .special-bg-1 {
+    background-color: #dedede;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='25' viewBox='0 0 120 120'%3E%3Cpolygon fill='%23ffffff' fill-opacity='0.3' points='120 0 120 60 90 30 60 0 0 0 0 0 60 60 0 120 60 120 90 90 120 60 120 0'/%3E%3C/svg%3E");
+  }
 
+  .special-bg-2 {
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='25' viewBox='0 0 120 120'%3E%3Cpolygon fill='%23dddddd' fill-opacity='0.3' points='120 0 120 60 90 30 60 0 0 0 0 0 60 60 0 120 60 120 90 90 120 60 120 0'/%3E%3C/svg%3E");
+  }
 </style>
