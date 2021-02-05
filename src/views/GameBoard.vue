@@ -40,8 +40,8 @@
           @click="onMark(rIdx, cIdx, true)"
           @contextmenu.prevent="onMark(rIdx, cIdx, false)">
           
-            <div v-if="boardMarker[`${rIdx}_${cIdx}`] === true">
-              o
+            <div v-if="boardMarker[`${rIdx}_${cIdx}`] === true" class="bg-red-800 w-5/6 h-5/6 rounded">
+              
             </div>
             <div v-else-if="boardMarker[`${rIdx}_${cIdx}`] === false">
               <svg class="text-gray-400 w-4 h-4 font-bold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
