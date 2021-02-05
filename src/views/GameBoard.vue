@@ -1,13 +1,29 @@
 <template>
   <div class="w-full h-full flex flex-col justify-center items-center">
+    
     <div class="flex flex-row" v-for="(r, rIdx) in numRows" :key="rIdx">
-      <div class="w-24 mr-2 flex justify-end items-center">
-        <div class="mr-2" v-for="(rRule, rRuleIdx) in rowRules[rIdx]" :key="rRuleIdx">
+      <div class="w-24 mr-2 flex justify-end items-center" 
+          :class="{ 'h-8': rIdx === 0, 'mt-24': rIdx === 0 }">
+        <div
+          v-for="(rRule, rRuleIdx) in rowRules[rIdx]"
+          :key="rRuleIdx"
+          class="mr-2">
           {{ rRule }}
         </div>
       </div>
 
       <div v-for="(c, cIdx) in numCols" :key="cIdx">
+        <div
+          v-if="rIdx === 0"
+          class="h-24 flex flex-col justify-end items-center">
+
+          <div 
+            v-for="(cRule, cRuleIdx) in colRules[cIdx]"
+            :key="cRuleIdx">
+            {{ cRule }}
+          </div>
+        </div>
+
         <div 
           class="w-8 h-8 border-gray-200 flex justify-center items-center select-none cursor-pointer"
           :class="{
@@ -16,13 +32,13 @@
             'border-b-2': rIdx < numRows,
             'border-l-2': cIdx == 0,
           }"
-          @click="onMark(r, c, true)"
-          @contextmenu.prevent="onMark(r, c, false)">
+          @click="onMark(rIdx, cIdx, true)"
+          @contextmenu.prevent="onMark(rIdx, cIdx, false)">
           
-            <div v-if="boardMarker[`${r}_${c}`] === true">
+            <div v-if="boardMarker[`${rIdx}_${cIdx}`] === true">
               o
             </div>
-            <div v-else-if="boardMarker[`${r}_${c}`] === false">
+            <div v-else-if="boardMarker[`${rIdx}_${cIdx}`] === false">
               x
             </div> 
 
