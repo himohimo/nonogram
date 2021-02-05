@@ -1,13 +1,13 @@
 <template>
   <div class="w-full h-full flex flex-col justify-center items-center">
     <div v-for="(r, rIdx) in numRows" :key="rIdx" class="flex flex-row">
-      <div v-for="(c, cIdx) in numCols" :key="cIdx" class="flex flex-col">
+      <div v-for="(c, cIdx) in numCols" :key="cIdx">
         <div 
-          class="w-16 h-16 border-blue-300"
+          class="w-8 h-8 border-gray-200"
           :class="{
             'border-t-2': rIdx == 0,
-            'border-r-2': cIdx <= numCols - 1,
-            'border-b-2': rIdx <= numRows - 1,
+            'border-r-2': cIdx < numCols,
+            'border-b-2': rIdx < numRows,
             'border-l-2': cIdx == 0,
           }"></div>
       </div>
