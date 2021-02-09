@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 export default {
   setup() {
@@ -119,6 +119,24 @@ export default {
       hoveredRow.value = null;
       hoveredCol.value = null;
     }
+
+    // check if won
+    const numMarked = computed(() => {
+      if (!boardMarker || !boardMarker.value) { return 0; }
+
+      return Object.entries(boardMarker.value)
+        .reduce((acc, [k,v]) => {
+          if (v === true) {
+            return acc+1;
+          } else {
+            return acc;
+          }
+        }, 0);
+    });
+
+    watch(numMarked, (newVal, oldVal) => {
+      // compare with solution
+    })
 
     return {
       numRows, numCols, rowRules, colRules, 
