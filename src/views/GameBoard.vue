@@ -4,12 +4,17 @@
     <div class="flex flex-row" v-for="(r, rIdx) in numRows" :key="rIdx">
 
       <!-- Rules for the rows -->
-      <div class="w-24 mr-2 flex justify-end items-center" 
-          :class="{ 'h-8': rIdx === 0, 'mt-24': rIdx === 0 }">
+      <div class="w-24 pr-2 flex justify-end items-center" 
+          :class="{ 
+            'h-8': rIdx === 0, 
+            'mt-24': rIdx === 0, 
+            'border-t': hoveredRow === rIdx,
+            'border-b': hoveredRow === rIdx,
+            'border-l': hoveredRow === rIdx  }">
         <div
           v-for="(rRule, rRuleIdx) in rowRules[rIdx]"
           :key="rRuleIdx"
-          class="mr-2">
+          class="pr-2">
           {{ rRule }}
         </div>
       </div>
@@ -19,7 +24,11 @@
         <!-- Rules for the columns -->
         <div
           v-if="rIdx === 0"
-          class="h-24 flex flex-col justify-end items-center">
+          class="h-24 flex flex-col justify-end items-center"
+          :class="{ 
+            'border-t': hoveredCol === cIdx,
+            'border-l': hoveredCol === cIdx,
+            'border-r': hoveredCol === cIdx }">
           <div 
             v-for="(cRule, cRuleIdx) in colRules[cIdx]"
             :key="cRuleIdx">
@@ -38,7 +47,9 @@
             'special-bg-2': (rIdx + cIdx) % 2 !== 0
           }"
           @click="onMark(rIdx, cIdx, true)"
-          @contextmenu.prevent="onMark(rIdx, cIdx, false)">
+          @contextmenu.prevent="onMark(rIdx, cIdx, false)"
+          @mouseover="onMouseOver(rIdx, cIdx)"
+          @mouseleave="onMouseLeave">
           
             <div v-if="boardMarker[`${rIdx}_${cIdx}`] === true" class="bg-red-800 w-5/6 h-5/6 rounded">
               
@@ -95,9 +106,24 @@ export default {
       }
     }
 
+    // logic for highlighting row and col
+    const hoveredRow = ref(null);
+    const hoveredCol = ref(null);
+
+    const onMouseOver = (r, c) => {
+      hoveredRow.value = r;
+      hoveredCol.value = c;
+    }
+
+    const onMouseLeave = () => {
+      hoveredRow.value = null;
+      hoveredCol.value = null;
+    }
+
     return {
       numRows, numCols, rowRules, colRules, 
-      boardMarker, onMark
+      boardMarker, onMark,
+      hoveredRow, hoveredCol, onMouseOver, onMouseLeave
     }
   }
 }
