@@ -70,31 +70,51 @@
 import { computed, ref, watch } from 'vue'
 
 export default {
-  setup() {
-    const numRows = ref(8);
-    const numCols = ref(8);
+  props: {
+    rules: Object,
+    solution: Object
+  },
+  setup(props) {
 
-    const rowRules = [
-      [4],
-      [3, 2],
-      [6],
-      [3],
-      [6, 1],
-      [1, 6],
-      [6],
-      [2, 3]
-    ]
+    const gbObject = {
+      rSize: 10,
+      cSize: 10,
+      rRules: [
+        [0],
+        [4],
+        [1, 3],
+        [6, 1],
+        [6, 1],
+        [8],
+        [8],
+        [8],
+        [2, 1],
+        [2, 2]
+      ],
+      cRules: [
+        [2],
+        [4, 1],
+        [1, 7],
+        [8],
+        [7],
+        [6],
+        [3],
+        [3],
+        [1, 3, 1],
+        [6]
+      ],
+      solutionSize: 53,
+      solution: [
+        '3_0',
+        '4_0'
+      ]
+    }
 
-    const colRules = [
-      [2, 2],
-      [2, 1, 1],
-      [8],
-      [1, 5],
-      [8],
-      [3, 4],
-      [3],
-      [3],
-    ]
+    const numRows = ref(gbObject.rSize);
+    const numCols = ref(gbObject.cSize);
+
+    const rowRules = ref(gbObject.rRules);
+    const colRules = ref(gbObject.cRules);
 
     const boardMarker = ref({});
 
@@ -135,8 +155,16 @@ export default {
     });
 
     watch(numMarked, (newVal, oldVal) => {
+      // if (newVal !== gbObject.solutionSize) { return; }
+      if (!boardMarker || !boardMarker.value) { return; }
+
       // compare with solution
-    })
+      for(const sPosition of gbObject.solution) {
+        if (!boardMarker.value[sPosition]) { return; }
+      }
+
+      console.log('You won!')
+    });
 
     return {
       numRows, numCols, rowRules, colRules, 
